@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Static page</title>
-
-    <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Static page</title>
 </head>
-
-<script>
-    throw new Error("test error thrown")
-</script>
-
 <body>
+  <input type="file" id="input-file" name="input-file" accept=".txt,.zip">
+  <div id="file-info"></div>
 
-    <input type="file" id="input-file" name="input-file" accept=".*">
+  <script>
+    const MAX_SIZE_BYTES = 85; // Maximum file size in bytes
 
+    document.getElementById('input-file').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const fileInfoDiv = document.getElementById('file-info');
+
+      if (file) {
+        // Checking file size
+        if (file.size > MAX_SIZE_BYTES) {
+          fileInfoDiv.innerHTML = `<p style="color: red;">The file is too large. Maximum allowed size is ${MAX_SIZE_BYTES} bytes.</p>`;
+          event.target.value = ''; // Clear the input to allow re-upload
+          return;
+        }
+
+        // Getting file size in bytes
+        const fileSize = file.size + ' bytes';
+        const fileType = file.type || 'Unknown';
+
+        // Displaying file information
+        fileInfoDiv.innerHTML = `
+          <p><strong>File Name:</strong> ${file.name}</p>
+          <p><strong>File Size:</strong> ${fileSize}</p>
+          <p><strong>File Type:</strong> ${fileType}</p>
+          <p><strong>Last Modified:</strong> ${new Date(file.lastModified).toLocaleString()}</p>
+        `;
+
+        // Clear input value to allow re-upload
+        event.target.value = '';
+      }
+    });
+  </script>
 </body>
-
 </html>
