@@ -19,7 +19,7 @@
       if (file) {
         // Checking file size
         if (file.size > MAX_SIZE_BYTES) {
-          fileInfoDiv.innerHTML = `<p style="color: red;">The file is too large. Maximum allowed size is ${MAX_SIZE_BYTES} bytes.</p>`;
+          fileInfoDiv.innerHTML = `<p style="color: red;">The file is too large (${file.size} bytes). Maximum allowed size is ${MAX_SIZE_BYTES} bytes.</p>`;
           event.target.value = ''; // Clear the input to allow re-upload
           return;
         }
