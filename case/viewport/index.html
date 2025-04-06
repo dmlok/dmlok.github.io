@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Window size with pretty rulers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+        /* corner is hidden */
+        #corner {
+            display: none;
+        }
+
+        /* top ruler spans the full width at top:0 */
+        #ruler-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            border-bottom: 1px solid #ccc;
+            background: #f0f0f0;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        /* left ruler spans the full height at left:0
+           removed border-right to hide the vertical line */
+        #ruler-left {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 44px;
+            /* border-right: 1px solid #ccc; */
+            background: #f0f0f0;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        #corner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 44px;
+            height: 30px;
+            border-bottom: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            background: #f0f0f0;
+            z-index: 1000;
+        }
+
+        .tick-x, .tick-y {
+            position: absolute;
+            font-size: 10px;
+            color: #666;
+            white-space: nowrap;
+        }
+        .tick-x {
+            top: 0;
+            width: 1px;
+            height: 10px;
+            background: #999;
+        }
+        .tick-x span {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .tick-y {
+            left: 0;
+            width: 10px;
+            height: 1px;
+            background: #999;
+        }
+        .tick-y span {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+        }
+        #dimensions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5vw;
+        }
+    </style>
+</head>
+<body>
+
+<div id="corner"></div>
+<div id="ruler-top"></div>
+<div id="ruler-left"></div>
+<div id="dimensions"></div>
+
+<script>
+    // updates both the text in the center and the ruler ticks
+    function updateRulers() {
+        const rulerTop = document.getElementById('ruler-top');
+        const rulerLeft = document.getElementById('ruler-left');
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // show dimensions in the center
+        document.getElementById('dimensions').textContent = width + ' × ' + height;
+
+        // clear previous ticks
+        rulerTop.innerHTML = '';
+        rulerLeft.innerHTML = '';
+
+        // draw vertical ticks along the top ruler
+        // skip 0 to remove the zero tick
+        for (let x = 100; x <= width; x += 100) {
+            const tick = document.createElement('div');
+            tick.className = 'tick-x';
+            tick.style.left = x + 'px'; // x is measured from left=0
+            const label = document.createElement('span');
+            label.textContent = x;
+            tick.appendChild(label);
+            rulerTop.appendChild(tick);
+        }
+
+        // draw horizontal ticks along the left ruler
+        // skip 0 to remove the zero tick
+        for (let y = 100; y <= height; y += 100) {
+            const tick = document.createElement('div');
+            tick.className = 'tick-y';
+            tick.style.top = y + 'px'; // y is measured from top=0
+            const label = document.createElement('span');
+            label.textContent = y;
+            tick.appendChild(label);
+            rulerLeft.appendChild(tick);
+        }
+    }
+
+    window.addEventListener('resize', updateRulers);
+    window.addEventListener('load', updateRulers);
+</script>
+
+</body>
+</html>
