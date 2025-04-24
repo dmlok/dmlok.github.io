@@ -75,6 +75,11 @@
             <input type="text" id="ref_id" name="ref_id" value="trialconf">
         </div>
 
+        <div class="field">
+            <label for="hs_company">hs_company (optional):</label>
+            <input type="text" id="hs_company" name="hs_company" value="">
+        </div>
+
         <div class="checkbox">
             <input type="checkbox" id="useStage" checked>
             <label for="useStage">Use Stage Environment</label>
@@ -92,15 +97,23 @@
             const hs_con = this.hs_con.value;
             const hs_dea = this.hs_dea.value;
             const ref_id = this.ref_id.value;
+            const hs_company = this.hs_company.value.trim();
             const useStage = document.getElementById('useStage').checked;
 
             // choose base domain
             const base = useStage ? 'https://app.ghostinspectortest.com' : 'https://app.ghostinspector.com';
 
-            // construct URL
-            const url = `${base}/account/create?hs_con=${encodeURIComponent(hs_con)}&hs_dea=${encodeURIComponent(hs_dea)}&ref_id=${encodeURIComponent(ref_id)}`;
+            // build query parameters
+            const params = new URLSearchParams();
+            params.append('hs_con', hs_con);
+            params.append('hs_dea', hs_dea);
+            params.append('ref_id', ref_id);
+            if (hs_company) {
+                params.append('hs_company', hs_company);
+            }
 
-            // open in new tab
+            // construct URL and open in new tab
+            const url = `${base}/account/create?${params.toString()}`;
             window.open(url, '_blank');
         });
     </script>
