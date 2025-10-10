@@ -86,12 +86,19 @@
             left: 14px;
             transform: translateY(-50%);
         }
-        #dimensions {
+        #window {
             position: absolute;
-            top: 50%;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 5vw;
+            font-size: 3vw;
+        }
+        #screen {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3vw;
         }
     </style>
 </head>
@@ -100,18 +107,23 @@
 <div id="corner"></div>
 <div id="ruler-top"></div>
 <div id="ruler-left"></div>
-<div id="dimensions"></div>
+<div id="window"></div>
+<div id="screen"></div>
 
 <script>
     // updates both the text in the center and the ruler ticks
     function updateRulers() {
         const rulerTop = document.getElementById('ruler-top');
         const rulerLeft = document.getElementById('ruler-left');
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
 
-        // show dimensions in the center
-        document.getElementById('dimensions').textContent = width + ' × ' + height;
+        const screenWidth = screen.width;
+        const screenHeight = screen.height;
+
+        // show window in the center
+        document.getElementById('window').textContent = `window.innerW/H : ${windowWidth} × ${windowHeight}` ;
+        document.getElementById('screen').textContent = `screen.w/h : ${screenWidth} × ${screenHeight}` ;
 
         // clear previous ticks
         rulerTop.innerHTML = '';
@@ -119,7 +131,7 @@
 
         // draw vertical ticks along the top ruler
         // skip 0 to remove the zero tick
-        for (let x = 100; x <= width; x += 100) {
+        for (let x = 100; x <= windowWidth; x += 100) {
             const tick = document.createElement('div');
             tick.className = 'tick-x';
             tick.style.left = x + 'px'; // x is measured from left=0
@@ -131,7 +143,7 @@
 
         // draw horizontal ticks along the left ruler
         // skip 0 to remove the zero tick
-        for (let y = 100; y <= height; y += 100) {
+        for (let y = 100; y <= windowHeight; y += 100) {
             const tick = document.createElement('div');
             tick.className = 'tick-y';
             tick.style.top = y + 'px'; // y is measured from top=0
